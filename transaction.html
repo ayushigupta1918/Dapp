@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+
+  </head>
+  <body>
+    <div id="app">
+      <h1>Calculator </h1>
+      <div>
+        <input type="text" id="a" placeholder="Number">
+        <input type="text" id="b" placeholder="Number">
+        <button id="add">Add</button>
+        <button id="sub">Add</button>
+
+        <button id="divide">Divide</button>
+        <button id="multiply">Multiply</button>
+        <p id="result"></p>
+      </div>
+    </div>
+    <script> 
+    const web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.infura.io/v3/778b37c5eb0b4235a8b88e458fdb11a3'))
+
+let abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "a",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "b",
+				"type": "uint256"
+			}
+		],
+		"name": "Add",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "a",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "b",
+				"type": "uint256"
+			}
+		],
+		"name": "Div",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "a",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "b",
+				"type": "uint256"
+			}
+		],
+		"name": "Mul",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "a",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "b",
+				"type": "uint256"
+			}
+		],
+		"name": "Sub",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	}
+]
+
+let address = "0x3dccf89b4eb697c815a0fb642bfe32991f9862e4"
+
+const contract = new web3.eth.Contract(abi, address)
+console.log(contract)
+
+
+async function addNumber() {
+    let a = parseInt(document.getElementById('a').value)
+    let b = parseInt(document.getElementById('b').value)
+    let result = await contract.methods.Add(a, b).call()
+    document.getElementById('result').innerHTML = result
+}
+
+async function subNumber() {
+    let a = parseInt(document.getElementById('a').value)
+    let b = parseInt(document.getElementById('b').value)
+    let result = await contract.methods.Sub(a, b).call()
+    document.getElementById('result').innerHTML = result
+}
+
+async function multiply() {
+    let a = parseInt(document.getElementById('a').value)
+    let b = parseInt(document.getElementById('b').value)
+    let result = await contract.methods.Mul(a, b).call()
+    document.getElementById('result').innerHTML = result
+}
+
+async function divide() {
+    let a = parseInt(document.getElementById('a').value)
+    let b = parseInt(document.getElementById('b').value)
+    let result = await contract.methods.Div(a, b).call()
+    document.getElementById('result').innerHTML = result
+}
+
+
+document.getElementById('add').addEventListener('click', addNumber)
+document.getElementById('divide').addEventListener('click', divide)
+document.getElementById('multiply').addEventListener('click', multiply)
+document.getElementById('sub').addEventListener('click', subNumber)
+
+    </script>
+  </body>
+</html>
